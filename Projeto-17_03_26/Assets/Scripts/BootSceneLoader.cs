@@ -45,7 +45,7 @@ public class BootSceneLoader : MonoBehaviour
                         try
                         {
                             mi.Invoke(mb, new object[] { targetName });
-                            Debug.Log($"BootSceneLoader: Delegated boot loading to '{typeName}'.");
+//                            Debug.Log($"BootSceneLoader: Delegated boot loading to '{typeName}'.");
                             delegated = true;
                             break;
                         }

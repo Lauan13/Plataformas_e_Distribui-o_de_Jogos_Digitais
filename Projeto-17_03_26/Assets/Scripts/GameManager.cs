@@ -162,7 +162,7 @@ public class GameManager : MonoBehaviour
     {
         _isLoadingScene = true;
 
-        Debug.Log($"GameManager: carregando cena '{sceneName}' (mode={mode})...");
+//        Debug.Log($"GameManager: carregando cena '{sceneName}' (mode={mode})...");
         AsyncOperation op = SceneManager.LoadSceneAsync(sceneName, mode);
         if (op == null)
         {
@@ -189,7 +189,7 @@ public class GameManager : MonoBehaviour
         }
 
         _isLoadingScene = false;
-        Debug.Log($"GameManager: cena '{sceneName}' carregada.");
+//        Debug.Log($"GameManager: cena '{sceneName}' carregada.");
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour
         _isLoadingScene = true;
 
         var currentScene = SceneManager.GetActiveScene();
-        Debug.Log($"GameManager: Boot sequence — carregando '{targetSceneName}' additivamente...");
+//        Debug.Log($"GameManager: Boot sequence — carregando '{targetSceneName}' additivamente...");
         var loadOp = SceneManager.LoadSceneAsync(targetSceneName, LoadSceneMode.Additive);
         if (loadOp == null)
         {
@@ -240,7 +240,7 @@ public class GameManager : MonoBehaviour
         AllocateInputToPlayer();
 
         _isLoadingScene = false;
-        Debug.Log($"GameManager: Boot sequence complete. Loaded '{targetSceneName}'.");
+//        Debug.Log($"GameManager: Boot sequence complete. Loaded '{targetSceneName}'.");
     }
 
     /// <summary>
@@ -266,7 +266,7 @@ public class GameManager : MonoBehaviour
 
         if (player == null)
         {
-            Debug.Log("GameManager: nenhum PlayerInput encontrado na cena.");
+//            Debug.Log("GameManager: nenhum PlayerInput encontrado na cena.");
             return;
         }
 
@@ -289,7 +289,7 @@ public class GameManager : MonoBehaviour
                 InputUser.PerformPairingWithDevice(firstDevice, user);
             }
 
-            Debug.Log($"GameManager: device '{firstDevice}' alocado ao PlayerInput '{player.gameObject.name}'.");
+//            Debug.Log($"GameManager: device '{firstDevice}' alocado ao PlayerInput '{player.gameObject.name}'.");
         }
         catch (Exception ex)
         {

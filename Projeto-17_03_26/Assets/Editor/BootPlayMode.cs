@@ -87,12 +87,12 @@ internal static class BootPlayMode
         }
 
         pendingOriginalPath = originalPath;
-        Debug.Log($"BootPlayMode: EnteredPlayMode. pendingOriginalPath='{pendingOriginalPath}'");
+//        Debug.Log($"BootPlayMode: EnteredPlayMode. pendingOriginalPath='{pendingOriginalPath}'");
         SceneManager.sceneLoaded += OnSceneLoadedInPlay;
         try
         {
             EditorSceneManager.LoadSceneInPlayMode(originalPath, new LoadSceneParameters(LoadSceneMode.Additive));
-            Debug.Log($"BootPlayMode: requested additive load of '{originalPath}'.");
+//            Debug.Log($"BootPlayMode: requested additive load of '{originalPath}'.");
             // schedule a deferred unload attempt in case of timing issues
             EditorApplication.delayCall += TryUnloadBootDeferred;
         }
@@ -124,7 +124,7 @@ internal static class BootPlayMode
             var sc = SceneManager.GetSceneAt(i);
             loadedList.AppendFormat("[{0}] name='{1}' path='{2}' isLoaded={3}; ", i, sc.name, sc.path, sc.isLoaded);
         }
-        Debug.Log("BootPlayMode: scenes after loading original: " + loadedList.ToString());
+//        Debug.Log("BootPlayMode: scenes after loading original: " + loadedList.ToString());
 
         // Try to unload any loaded scene that corresponds to _Boot.
         // Prefer the saved boot path (EditorPrefs) when available.
