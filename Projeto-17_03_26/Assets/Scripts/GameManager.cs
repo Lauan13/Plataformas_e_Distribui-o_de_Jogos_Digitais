@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private IEnumerator LoadGUISceneCoroutine()
     {
-        Debug.Log("GameManager: carregando cena 'GUI' de forma aditiva...");
+//        Debug.Log("GameManager: carregando cena 'GUI' de forma aditiva...");
         var loadOp = SceneManager.LoadSceneAsync("GUI", LoadSceneMode.Additive);
         if (loadOp == null)
         {
@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
             yield return null;
 
         _isGUILoaded = true;
-        Debug.Log("GameManager: cena 'GUI' carregada com sucesso.");
+//        Debug.Log("GameManager: cena 'GUI' carregada com sucesso.");
     }
 
     /// <summary>
@@ -221,7 +221,7 @@ public class GameManager : MonoBehaviour
     {
         if (State == newState) return;
         State = newState;
-        Debug.Log($"GameManager: estado alterado para {State}");
+//        Debug.Log($"GameManager: estado alterado para {State}");
         OnStateChanged?.Invoke(State);
     }
 

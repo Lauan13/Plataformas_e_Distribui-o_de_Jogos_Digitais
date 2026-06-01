@@ -270,7 +270,7 @@ internal static class BootPlayMode
                 if (AssetDatabase.LoadAssetAtPath<SceneAsset>(originalPath) != null || File.Exists(Path.GetFullPath(originalPath)))
                 {
                     EditorSceneManager.OpenScene(originalPath, OpenSceneMode.Single);
-                    Debug.Log($"BootPlayMode: restored editor scene '{originalPath}' after Stop.");
+//                    Debug.Log($"BootPlayMode: restored editor scene '{originalPath}' after Stop.");
                 }
                 else
                 {
