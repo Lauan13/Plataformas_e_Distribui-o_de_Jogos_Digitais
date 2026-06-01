@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     public event Action<GameState> OnStateChanged;
 
     private bool _isLoadingScene;
+    private bool _isGUILoaded;
 
     private void Awake()
     {
@@ -78,6 +79,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        OnStateChanged += OnGameStateChanged;
         // set initial state based on currently active scene
         var active = SceneManager.GetActiveScene();
         MapSceneToState(active.name);
@@ -86,11 +88,76 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        OnStateChanged -= OnGameStateChanged;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         MapSceneToState(scene.name);
+    }
+
+    /// <summary>
+    /// Callback acionado quando o estado do jogo muda.
+    /// Carrega a cena GUI quando entra em Gameplay e a descarrega ao sair.
+    /// </summary>
+    private void OnGameStateChanged(GameState newState)
+    {
+        if (newState == GameState.Gameplay)
+        {
+            // Carrega a cena GUI de forma aditiva quando entra em Gameplay
+            if (!_isGUILoaded)
+            {
+                StartCoroutine(LoadGUISceneCoroutine());
+            }
+        }
+        else
+        {
+            // Descarrega a cena GUI quando sai de Gameplay
+            if (_isGUILoaded)
+            {
+                StartCoroutine(UnloadGUISceneCoroutine());
+            }
+        }
+    }
+
+    /// <summary>
+    /// Carrega a cena GUI de forma aditiva.
+    /// </summary>
+    private IEnumerator LoadGUISceneCoroutine()
+    {
+        Debug.Log("GameManager: carregando cena 'GUI' de forma aditiva...");
+        var loadOp = SceneManager.LoadSceneAsync("GUI", LoadSceneMode.Additive);
+        if (loadOp == null)
+        {
+            Debug.LogError("GameManager: falha ao carregar cena 'GUI'.");
+            yield break;
+        }
+
+        while (!loadOp.isDone)
+            yield return null;
+
+        _isGUILoaded = true;
+        Debug.Log("GameManager: cena 'GUI' carregada com sucesso.");
+    }
+
+    /// <summary>
+    /// Descarrega a cena GUI.
+    /// </summary>
+    private IEnumerator UnloadGUISceneCoroutine()
+    {
+        Debug.Log("GameManager: descarregando cena 'GUI'...");
+        var unloadOp = SceneManager.UnloadSceneAsync("GUI");
+        if (unloadOp == null)
+        {
+            Debug.LogError("GameManager: falha ao descarregar cena 'GUI'.");
+            yield break;
+        }
+
+        while (!unloadOp.isDone)
+            yield return null;
+
+        _isGUILoaded = false;
+        Debug.Log("GameManager: cena 'GUI' descarregada com sucesso.");
     }
 
     private void MapSceneToState(string sceneName)
