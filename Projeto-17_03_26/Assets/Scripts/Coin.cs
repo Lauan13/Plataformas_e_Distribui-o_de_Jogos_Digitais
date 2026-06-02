@@ -24,10 +24,16 @@ public class Coin : MonoBehaviour
         {
             Debug.Log($"[COIN] Colisão detectada com Player! Moeda: {gameObject.name}, Valor: {coinValue}");
             
-            // Adiciona a moeda ao total acumulado no PlayerObserverManager
-            PlayerObserverManager.AddCoins(coinValue);
-            
- //           Debug.Log($"[COIN] AddCoins({coinValue}) foi chamado. Moeda será destruída agora.");
+            // Obtém o PlayerController do objeto que colidiu e delega a adição de moedas ao próprio jogador
+            var player = collision.GetComponent<PlayerController>();
+            if (player != null)
+            {
+                player.AddCoins(coinValue);
+            }
+            else
+            {
+                Debug.LogWarning($"[COIN] Objeto com tag 'Player' não possui PlayerController. Não foi possível adicionar {coinValue} moedas.");
+            }
             
             // Destroi este objeto (a moeda)
             Destroy(gameObject);

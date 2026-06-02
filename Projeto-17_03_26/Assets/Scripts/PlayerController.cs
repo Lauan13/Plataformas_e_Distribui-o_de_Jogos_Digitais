@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     // Ground check
     private float groundCheckDistance = 0.6f;
 
+    // Inventário do jogador: total de moedas (não estático, cada jogador gerencia seu próprio total)
+    private int _totalCoins = 0;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -51,6 +54,10 @@ public class PlayerController : MonoBehaviour
 
         if (jumpAction != null)
             jumpAction.performed += OnJumpPerformed;
+
+        // Notifica o HUD/observadores do valor atual (inicial)
+        // Isso garante que qualquer HUD que esteja inscrito receba o valor inicial ao habilitar o jogador.
+        PlayerObserverManager.NotifyCoinsChanged(_totalCoins);
     }
 
     void OnDisable()
@@ -106,6 +113,27 @@ public class PlayerController : MonoBehaviour
         Vector3 origin = transform.position + Vector3.up * 0.1f;
         float distance = groundCheckDistance + 0.02f;
         return Physics.Raycast(origin, Vector3.down, distance);
+    }
+
+    /// <summary>
+    /// Adiciona moedas ao inventário local do jogador e notifica observadores através do PlayerObserverManager.
+    /// </summary>
+    /// <param name="value">Quantidade de moedas a adicionar (deve ser >= 0).</param>
+    public void AddCoins(int value)
+    {
+        if (value <= 0)
+        {
+            if (value < 0)
+                Debug.LogWarning($"PlayerController.AddCoins(): valor negativo ({value}) rejeitado.");
+            return;
+        }
+
+        int previous = _totalCoins;
+        _totalCoins += value;
+        Debug.Log($"[Player] Moedas +{value} | Total anterior: {previous} | Total atual: {_totalCoins}");
+
+        // Notifica HUDs/observadores com o novo total do jogador
+        PlayerObserverManager.NotifyCoinsChanged(_totalCoins);
     }
 }
 
