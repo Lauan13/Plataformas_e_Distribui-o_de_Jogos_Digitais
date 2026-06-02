@@ -22,12 +22,12 @@ public class Coin : MonoBehaviour
         // Verifica se o objeto que colidiu é o Player
         if (collision.CompareTag("Player"))
         {
-//            Debug.Log($"[COIN] Colisão detectada com Player! Moeda: {gameObject.name}, Valor: {coinValue}");
+            Debug.Log($"[COIN] Colisão detectada com Player! Moeda: {gameObject.name}, Valor: {coinValue}");
             
             // Adiciona a moeda ao total acumulado no PlayerObserverManager
             PlayerObserverManager.AddCoins(coinValue);
             
-//            Debug.Log($"[COIN] AddCoins({coinValue}) foi chamado. Moeda será destruída agora.");
+ //           Debug.Log($"[COIN] AddCoins({coinValue}) foi chamado. Moeda será destruída agora.");
             
             // Destroi este objeto (a moeda)
             Destroy(gameObject);

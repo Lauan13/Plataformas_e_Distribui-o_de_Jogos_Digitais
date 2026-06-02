@@ -55,7 +55,7 @@ public class CoinHUD : MonoBehaviour
         if (coinText != null)
         {
             coinText.text = $"Moedas: {coinCount}";
-//            Debug.Log($"[HUD] Texto atualizado para: 'Moedas: {coinCount}'");
+            Debug.Log($"[HUD] Texto atualizado para: 'Moedas: {coinCount}'");
         }
         else
         {

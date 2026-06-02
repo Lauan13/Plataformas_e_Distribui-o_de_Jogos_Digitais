@@ -57,7 +57,7 @@ public static class PlayerObserverManager
         // Operador += garante acúmulo correto (não sobrescreve, adiciona)
         _totalCoins += value;
 
-//        Debug.Log($"[COINS] Moeda(s) adicionada(s): +{value} | Total anterior: {previousTotal} | Total atual: {_totalCoins}");
+        Debug.Log($"[COINS] Moeda(s) adicionada(s): +{value} | Total anterior: {previousTotal} | Total atual: {_totalCoins}");
         
         // Dispara o evento com o novo total ACUMULADO
         NotifyCoinsChanged(_totalCoins);
@@ -89,7 +89,7 @@ public static class PlayerObserverManager
     /// <param name="coinCount">A nova quantidade de moedas do jogador.</param>
     public static void NotifyCoinsChanged(int coinCount)
     {
-//        Debug.Log($"[EVENT] OnCoinsChanged disparado com valor: {coinCount}");
+        Debug.Log($"[EVENT] OnCoinsChanged disparado com valor: {coinCount}");
         OnCoinsChanged?.Invoke(coinCount);
     }
 }
