@@ -55,6 +55,9 @@ public class PlayerController : MonoBehaviour
         if (jumpAction != null)
             jumpAction.performed += OnJumpPerformed;
 
+        // Se inscreve no evento de coleta de moedas para desacoplar do Coin.cs
+        PlayerObserverManager.OnCoinCollected += HandleCoinCollected;
+
         // Notifica o HUD/observadores do valor atual (inicial)
         // Isso garante que qualquer HUD que esteja inscrito receba o valor inicial ao habilitar o jogador.
         PlayerObserverManager.NotifyCoinsChanged(_totalCoins);
@@ -67,6 +70,9 @@ public class PlayerController : MonoBehaviour
 
         if (jumpAction != null)
             jumpAction.performed -= OnJumpPerformed;
+
+        // Se desinscreve do evento de coleta de moedas para evitar memory leaks
+        PlayerObserverManager.OnCoinCollected -= HandleCoinCollected;
     }
 
     void FixedUpdate()
@@ -134,6 +140,16 @@ public class PlayerController : MonoBehaviour
 
         // Notifica HUDs/observadores com o novo total do jogador
         PlayerObserverManager.NotifyCoinsChanged(_totalCoins);
+    }
+
+    /// <summary>
+    /// Handler chamado quando uma moeda é coletada (via evento OnCoinCollected).
+    /// Desacopla o PlayerController do Coin.cs através do padrão Observer.
+    /// </summary>
+    /// <param name="coinValue">O valor da moeda coletada.</param>
+    private void HandleCoinCollected(int coinValue)
+    {
+        AddCoins(coinValue);
     }
 }
 
