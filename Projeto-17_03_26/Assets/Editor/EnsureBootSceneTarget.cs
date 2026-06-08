@@ -13,6 +13,11 @@ internal static class EnsureBootSceneTarget
 
     private static void EnsureAssetExists()
     {
+        // 🔒 TRAVA DE SEGURANÇA: Se o jogo estiver rodando ou entrando em PlayMode, para tudo aqui!
+        if (EditorApplication.isPlaying || EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            return;
+        }
 
         var asset = AssetDatabase.LoadAssetAtPath<BootSceneTarget>(ResourceAssetPath);
         if (asset == null)
@@ -32,6 +37,12 @@ internal static class EnsureBootSceneTarget
 
     private static void EnsureBootSceneHasLoader()
     {
+        // Outra garantia caso o método seja chamado isoladamente
+        if (EditorApplication.isPlaying || EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            return;
+        }
+
         // Find boot scene path
         var guids = AssetDatabase.FindAssets("t:Scene");
         string bootPath = null;
@@ -53,6 +64,12 @@ internal static class EnsureBootSceneTarget
 
         // Remember current scene
         var active = UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();
+
+        // Se por algum motivo a cena ativa não tiver um caminho válido ainda (cena nova sem salvar), evita o erro
+        if (string.IsNullOrEmpty(active.path))
+        {
+            return;
+        }
 
         // Open boot scene additively to modify
         var scene = UnityEditor.SceneManagement.EditorSceneManager.OpenScene(bootPath, UnityEditor.SceneManagement.OpenSceneMode.Additive);
@@ -116,6 +133,3 @@ internal static class EnsureBootSceneTarget
         UnityEditor.SceneManagement.EditorSceneManager.OpenScene(active.path, UnityEditor.SceneManagement.OpenSceneMode.Single);
     }
 }
-
-
-
