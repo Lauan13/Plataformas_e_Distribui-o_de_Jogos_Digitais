@@ -43,7 +43,6 @@ public static class BootPlayModeInterceptor
                 }
                 else
                 {
-                    // Continue without setting a start scene
                     return;
                 }
             }
@@ -56,7 +55,7 @@ public static class BootPlayModeInterceptor
             }
 
             // Save the currently active scene path into a ScriptableObject under Resources
-            var activeScene = UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene();
+            var activeScene = EditorSceneManager.GetActiveScene();
             var targetPath = activeScene.path; // e.g. Assets/Scenes/Level1.unity
             var targetName = Path.GetFileNameWithoutExtension(targetPath);
 
@@ -82,18 +81,17 @@ public static class BootPlayModeInterceptor
 
             asset.TargetScenePath = targetPath;
             asset.TargetSceneName = targetName;
-            EditorUtility.SetDirty(asset);
+            Debug.Log($"BootPlayModeInterceptor: Starting Play from '{bootPath}', saved target '{targetName}' (path '{targetPath}').");
             AssetDatabase.SaveAssets();
 
             // Set the playModeStartScene to _Boot
-            UnityEditor.SceneManagement.EditorSceneManager.playModeStartScene = bootSceneAsset;
-            Debug.Log($"BootPlayModeInterceptor: Starting Play from '{bootPath}', saved target '{targetName}' (path '{targetPath}').");
+            EditorSceneManager.playModeStartScene = bootSceneAsset;
         }
 
         if (state == PlayModeStateChange.EnteredEditMode)
         {
             // Clear the custom start scene after exiting Play
-            UnityEditor.SceneManagement.EditorSceneManager.playModeStartScene = null;
+            EditorSceneManager.playModeStartScene = null;
             // Optionally, remove or clear the resources asset
             var asset = AssetDatabase.LoadAssetAtPath<BootSceneTarget>(ResourceAssetPath);
             if (asset != null)

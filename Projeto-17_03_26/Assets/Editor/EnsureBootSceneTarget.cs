@@ -13,6 +13,7 @@ internal static class EnsureBootSceneTarget
 
     private static void EnsureAssetExists()
     {
+
         var asset = AssetDatabase.LoadAssetAtPath<BootSceneTarget>(ResourceAssetPath);
         if (asset == null)
         {
@@ -115,5 +116,6 @@ internal static class EnsureBootSceneTarget
         UnityEditor.SceneManagement.EditorSceneManager.OpenScene(active.path, UnityEditor.SceneManagement.OpenSceneMode.Single);
     }
 }
+
 
 
